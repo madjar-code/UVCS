@@ -1,0 +1,2 @@
+This folder will contain local images for urban objects.
+For now, we'll use placeholder URLs that point to the backend static server.
