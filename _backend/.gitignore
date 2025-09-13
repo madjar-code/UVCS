@@ -69,3 +69,9 @@ coverage.xml
 # Temporary files
 *.tmp
 *.temp
+
+# Media files
+media/*
+
+# Data files
+data/*
