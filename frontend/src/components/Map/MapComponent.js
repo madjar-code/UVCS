@@ -130,8 +130,8 @@ const MapComponent = ({ buildings = [] }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Default center coordinates (Chisinau, Moldova - Stephen the Great Central Park area)
-  const defaultCenter = [47.0105, 28.8638];
-  const defaultZoom = 13;
+  const defaultCenter = [47.0246, 28.8329];
+  const defaultZoom = 12;
 
   useEffect(() => {
     // Simulate loading time

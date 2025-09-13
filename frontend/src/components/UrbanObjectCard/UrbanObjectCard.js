@@ -86,10 +86,10 @@ const UrbanObjectCard = ({ result }) => {
           </InfoRow>
         )}
 
-        {result.floors && (
+        {result.version_count && (
           <InfoRow>
-            <IconImg src={VersionIcon} alt="Floors" />
-            <InfoText>{result.floors}</InfoText>
+            <IconImg src={VersionIcon} alt="Version" />
+            <InfoText>{result.version_count}</InfoText>
           </InfoRow>
         )}
       </ItemContent>
@@ -131,7 +131,7 @@ const ItemCard = styled.div`
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   border-radius: 8px;
-  padding: 8px;
+  /* padding: 8px; */
   margin: -8px;
 
   &:hover {

@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 import MapComponent from '../components/Map/MapComponent'
 import SearchResultCard from '../components/UrbanObjectCard/UrbanObjectCard'
@@ -10,13 +10,14 @@ import ArrowUpIcon from '../assets/icons/ui/arrow-up.svg'
 
 const IndexPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
 
   const [searchName, setSearchName] = useState(searchParams.get('name') || '');
   const [searchType, setSearchType] = useState(searchParams.get('type') || 'any');
   const [searchStatus, setSearchStatus] = useState(searchParams.get('status') || 'any');
   const [searchOwnership, setSearchOwnership] = useState(searchParams.get('ownership') || 'any');
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [allUrbanObjects, setAllUrbanObjects] = useState([]);
+  const [loading, setLoading] = useState(false);
   const currentPage = parseInt(searchParams.get('page')) || 1;
   const leftPanelRef = useRef(null);
 
@@ -45,93 +46,21 @@ const IndexPage = () => {
     }
   };
 
-  const searchResults = useMemo(() => {
-    const baseResults = [
-      {
-        id: 1,
-        name: 'The "Romashka" Building',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=240&h=160&fit=crop&crop=center',
-        address: '454 Park Avenue, Chisinau',
-        date: '19/04/2023',
-        floors: 16,
-        type: 'building',
-        ownership: 'governmental',
-        status: 'destroying',
-        coordinates: [47.0105, 28.8638]
-      },
-      {
-        id: 2,
-        name: 'Water Tower',
-        image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=240&h=160&fit=crop&crop=center',
-        address: '12 Park Avenue, Chisinau',
-        date: '18/04/2023',
-        floors: 30,
-        type: 'museum',
-        ownership: 'governmental',
-        status: 'changing',
-        coordinates: [47.0265, 28.8413]
-      },
-      {
-        id: 3,
-        name: 'Artcor Building',
-        image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=240&h=160&fit=crop&crop=center',
-        address: '3101 August Street, 15',
-        date: '11/09/2019',
-        floors: 3,
-        type: 'building',
-        ownership: 'private',
-        status: 'regular',
-        coordinates: [47.0186, 28.8497]
-      },
-      {
-        id: 4,
-        name: 'Central Library',
-        image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=240&h=160&fit=crop&crop=center',
-        address: '25 Stefan cel Mare Boulevard',
-        date: '15/03/2022',
-        floors: 5,
-        type: 'library',
-        ownership: 'governmental',
-        status: 'regular',
-        coordinates: [47.0245, 28.8322]
-      },
-      {
-        id: 5,
-        name: 'Modern Office Complex',
-        image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=240&h=160&fit=crop&crop=center',
-        address: '100 Business Street',
-        date: '22/08/2023',
-        floors: 12,
-        type: 'office',
-        ownership: 'private',
-        status: 'changing',
-        coordinates: [47.0156, 28.8574]
-      }
-    ];
+  // API call function - fetch all data once
+  const fetchUrbanObjects = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`http://localhost:8000/api/v1/urban-objects`);
+      const data = await response.json();
 
-    // Generate 50 items for pagination demonstration
-    const results = [];
-    for (let i = 0; i < 50; i++) {
-      const baseItem = baseResults[i % baseResults.length];
-      // Generate slightly different coordinates for each item (within Chisinau area)
-      // Using seeded random based on index to ensure consistency
-      const seed = i * 12345; // Simple seed based on index
-      const latOffset = ((seed % 1000) / 1000 - 0.5) * 0.02; // ±0.01 degrees
-      const lngOffset = (((seed * 7) % 1000) / 1000 - 0.5) * 0.02; // ±0.01 degrees
-
-      results.push({
-        ...baseItem,
-        id: i + 1,
-        name: `${baseItem.name} ${i + 1}`,
-        address: `${baseItem.address} - Unit ${i + 1}`,
-        coordinates: [
-          baseItem.coordinates[0] + latOffset,
-          baseItem.coordinates[1] + lngOffset
-        ]
-      });
+      setAllUrbanObjects(data);
+    } catch (error) {
+      console.error('Error fetching urban objects:', error);
+      setAllUrbanObjects([]);
+    } finally {
+      setLoading(false);
     }
-    return results;
-  }, []); // Empty dependency array ensures this runs only once
+  }, []);
 
   // Create applied filters state that only updates when search button is clicked
   const [appliedFilters, setAppliedFilters] = useState({
@@ -141,32 +70,44 @@ const IndexPage = () => {
     ownership: searchParams.get('ownership') || 'any'
   });
 
-  // Sync applied filters with URL params on mount and URL changes
+  // Load data when component mounts
   useEffect(() => {
-    setAppliedFilters({
+    fetchUrbanObjects();
+  }, [fetchUrbanObjects]);
+
+  // Update applied filters when URL changes
+  useEffect(() => {
+    const filters = {
       name: searchParams.get('name') || '',
       type: searchParams.get('type') || 'any',
       status: searchParams.get('status') || 'any',
       ownership: searchParams.get('ownership') || 'any'
-    });
+    };
+    setAppliedFilters(filters);
   }, [searchParams]);
 
-  // Filter results based on applied search criteria (not current form values)
-  const filteredResults = searchResults.filter(result => {
-    const nameMatch = appliedFilters.name === '' ||
-      result.name.toLowerCase().includes(appliedFilters.name.toLowerCase());
-    const typeMatch = appliedFilters.type === 'any' || result.type === appliedFilters.type;
-    const statusMatch = appliedFilters.status === 'any' || result.status === appliedFilters.status;
-    const ownershipMatch = appliedFilters.ownership === 'any' || result.ownership === appliedFilters.ownership;
+  // Local filtering logic
+  const filteredResults = allUrbanObjects.filter(obj => {
+    const nameMatch = !appliedFilters.name ||
+      obj.name.toLowerCase().includes(appliedFilters.name.toLowerCase()) ||
+      (obj.address && obj.address.toLowerCase().includes(appliedFilters.name.toLowerCase()));
+
+    const typeMatch = appliedFilters.type === 'any' || obj.type === appliedFilters.type;
+    const statusMatch = appliedFilters.status === 'any' || obj.status === appliedFilters.status;
+    const ownershipMatch = appliedFilters.ownership === 'any' || obj.ownership === appliedFilters.ownership;
 
     return nameMatch && typeMatch && statusMatch && ownershipMatch;
   });
 
+  // Sort results by name
+  const sortedResults = [...filteredResults].sort((a, b) => a.name.localeCompare(b.name));
+
   // Pagination logic
-  const totalPages = Math.ceil(filteredResults.length / ITEMS_PER_PAGE);
+  const totalItems = sortedResults.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentResults = filteredResults.slice(startIndex, endIndex);
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+  const currentResults = sortedResults.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const updateURL = (newParams) => {
     const params = new URLSearchParams(searchParams);
@@ -280,9 +221,12 @@ const IndexPage = () => {
           <ResultsContainer>
             <ResultsHeader>
               <ResultsCount>
-                Showing {startIndex + 1}-{Math.min(endIndex, filteredResults.length)} of {filteredResults.length} results
-                {filteredResults.length !== searchResults.length && (
-                  <span> (filtered from {searchResults.length} total)</span>
+                {loading ? (
+                  'Loading...'
+                ) : (
+                  <>
+                    Showing {startIndex + 1}-{endIndex} of {totalItems} results
+                  </>
                 )}
               </ResultsCount>
             </ResultsHeader>
@@ -413,6 +357,7 @@ const MainContent = styled.div`
 
 const LeftPanel = styled.div`
   padding-top: 40px;
+  padding-bottom: 30px; /* extra bottom spacing so last card isn't flush with edge */
   overflow-y: auto;
   margin-right: 30px;
   /* background-color: green; */
