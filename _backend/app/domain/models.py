@@ -1,7 +1,13 @@
 from datetime import datetime
 from typing import List, Optional
 from dataclasses import dataclass
-from uuid import UUID
+from enum import Enum
+
+
+class ChangeType(str, Enum):
+    CREATION = "creation"
+    MODIFICATION = "modification"
+    DELETION = "deletion"
 
 
 @dataclass
@@ -14,7 +20,7 @@ class Coordinates:
 @dataclass
 class Media:
     """Media domain model"""
-    id: UUID
+    id: int
     source: str
     created_date: datetime
     title: Optional[str] = None
@@ -24,7 +30,7 @@ class Media:
 @dataclass
 class UrbanChange:
     """Urban Change domain model"""
-    id: UUID
+    id: int
     title: str
     description: str
     change_type: str
@@ -38,7 +44,7 @@ class UrbanChange:
 @dataclass
 class UrbanObjectVersion:
     """Urban Object Version domain model"""
-    id: UUID
+    id: int
     version: int
     title: str
     description: str
@@ -56,7 +62,7 @@ class UrbanObjectVersion:
 @dataclass
 class UrbanObject:
     """Urban Object domain model"""
-    id: UUID
+    id: int
     name: str
     type: str
     created_date: datetime

@@ -4,7 +4,7 @@ import logging
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 
-from ..schemas.uo_schemas import UrbanObjectResponseSchema
+from ..schemas.uo_schemas import UrbanObjectResponseSchema, UrbanObjectDetailResponseSchema
 from ..service.uo_service import UrbanObjectService
 from ..uow import AbstractUnitOfWork, get_uow
 
@@ -44,4 +44,25 @@ async def get_urban_objects(
         raise HTTPException(
             status_code=500,
             detail="Internal server error while fetching urban objects"
+        )
+
+
+@router.get("/urban-objects/{object_id}", response_model=UrbanObjectDetailResponseSchema)
+async def get_urban_object_detail(object_id: int, service: UrbanObjectService = Depends(get_urban_object_service)):
+    """Get a single urban object detail with versions (nodes) and changes (connectors).
+    Versions and changes are returned newest-first to match the frontend timeline order.
+    """
+    try:
+        logger.info(f"Fetching urban object detail for id={object_id}")
+        result = await service.get_urban_object_detail(object_id)
+        if result is None:
+            raise HTTPException(status_code=404, detail="Urban object not found")
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching urban object detail: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail="Internal server error while fetching urban object detail",
         )
