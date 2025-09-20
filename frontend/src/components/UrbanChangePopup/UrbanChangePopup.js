@@ -2,7 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 
 // Import popup icons
-import typePopupIcon from '../../assets/icons/popup/type.svg'
+import typePopupIconCreation from '../../assets/icons/popup/type_creation.svg'
+import typePopupIconDeletion from '../../assets/icons/popup/type_deletion.svg'
+import typePopupIconModification from '../../assets/icons/popup/type_modification.svg'
 import statusPopupIcon from '../../assets/icons/popup/status.svg'
 import authorPopupIcon from '../../assets/icons/popup/author.svg'
 import datePopupIcon from '../../assets/icons/popup/date.svg'
@@ -11,6 +13,33 @@ import closeButtonIcon from '../../assets/icons/ui/close.svg'
 
 const UrbanChangePopup = ({ isOpen, change, onClose }) => {
   if (!isOpen || !change) return null
+
+  const fmt = (iso) => {
+    if (!iso) return '-'
+    const d = new Date(iso)
+    if (Number.isNaN(d.getTime())) return ''
+    const dd = String(d.getDate()).padStart(2, '0')
+    const mm = String(d.getMonth() + 1).padStart(2, '0')
+    const yyyy = d.getFullYear()
+    return `${dd}/${mm}/${yyyy}`
+  }
+
+  const daysBetween = (a, b) => {
+    const d1 = a ? new Date(a) : null
+    const d2 = b ? new Date(b) : null
+    if (!d1 || !d2 || Number.isNaN(d1.getTime()) || Number.isNaN(d2.getTime())) return '-'
+    const diff = Math.abs(d2 - d1)
+    return `${Math.round(diff / (1000 * 60 * 60 * 24))} days`
+  }
+
+  const typeFilter = (t) => {
+    console.log(t)
+    const v = String(t || '').toLowerCase()
+    if (v === 'creation') return typePopupIconCreation
+    if (v === 'deletion') return typePopupIconDeletion
+    if (v === 'modification') return typePopupIconModification
+    return 'none'
+  }
 
   return (
     <ChangePopupModal onClick={onClose}>
@@ -21,18 +50,9 @@ const UrbanChangePopup = ({ isOpen, change, onClose }) => {
             <img src={closeButtonIcon} alt="Close" />
           </CloseButton>
         </ChangePopupHeader>
-        
+
         <ChangePopupDescription>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus euismod, neque lobortis
-          tincidunt malesuada, est massa elementum felis, quis sodales velit ante et libero. Nullam
-          maximus nunc velit, malesuada, non semper ipsum luctus. Suspendisse eu magna risus. Ut ac
-          feugiat leo, cursus posuere felis. Nulla magna justo, sodales nec congue ac, auctor id enim.
-          Curabitur interdum augue vel justo elementum, vel maximus nibh faucibus. Proin convallis nibh
-          tellus, nec blandit mi placerat in. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-          Maecenas in ex quis enim eleifend finibus. Aenean venenatis, nunc at mollis tincidunt, risus metus
-          scelerisque odio, eget volutpat ex lorem id tellus. Vestibulum viverra eleifend enim eu placerat.
-          Duis bibendum, lacus ac semper porttitor, nulla diam mollis libero, a lacinia diam urna at augue.
-          Sed in quam mattis, bibendum sapien et, ullamcorper dolor. Sed dignissim
+          {change.description || ''}
         </ChangePopupDescription>
 
         <ChangePopupSections>
@@ -40,24 +60,24 @@ const UrbanChangePopup = ({ isOpen, change, onClose }) => {
             <ChangePopupSectionTitle>General</ChangePopupSectionTitle>
             <ChangePopupInfo>
               <ChangePopupInfoItem>
-                <img src={typePopupIcon} alt="Type" />
+                <img src={typeFilter(change.type)} alt="Type"/>
                 <div>
                   <span>Type</span>
-                  <span>destroying</span>
+                  <span>{String(change.type || '').toLowerCase()}</span>
                 </div>
               </ChangePopupInfoItem>
               <ChangePopupInfoItem>
                 <img src={statusPopupIcon} alt="Status" />
                 <div>
                   <span>Status</span>
-                  <span>in progress</span>
+                  <span>{String(change.status || '').toLowerCase()}</span>
                 </div>
               </ChangePopupInfoItem>
               <ChangePopupInfoItem>
                 <img src={authorPopupIcon} alt="Author" />
                 <div>
                   <span>Author</span>
-                  <span>Ivan Madjar</span>
+                  <span>{change.author || '-'}</span>
                 </div>
               </ChangePopupInfoItem>
             </ChangePopupInfo>
@@ -70,21 +90,21 @@ const UrbanChangePopup = ({ isOpen, change, onClose }) => {
                 <img src={datePopupIcon} alt="Start Date" />
                 <div>
                   <span>Start Date</span>
-                  <span>12/01/2025</span>
+                  <span>{fmt(change?.dates?.start)}</span>
                 </div>
               </ChangePopupInfoItem>
               <ChangePopupInfoItem>
                 <img src={datePopupIcon} alt="End Date" />
                 <div>
                   <span>End Date</span>
-                  <span>17/05/2025</span>
+                  <span>{fmt(change?.dates?.end)}</span>
                 </div>
               </ChangePopupInfoItem>
               <ChangePopupInfoItem>
                 <img src={durationPopupIcon} alt="Time Interval" />
                 <div>
                   <span>Time Interval</span>
-                  <span>120 days</span>
+                  <span>{change?.ui?.time_interval_text || daysBetween(change?.dates?.start, change?.dates?.end)}</span>
                 </div>
               </ChangePopupInfoItem>
             </ChangePopupInfo>
@@ -144,8 +164,9 @@ const CloseButton = styled.button`
   justify-content: center;
 
   img {
-    width: 16px;
-    height: 16px;
+    margin-top: -15px;
+    width: 18px;
+    height: 18px;
   }
 `
 
@@ -181,16 +202,13 @@ const ChangePopupInfoItem = styled.div`
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
-  
   &:last-child {
     margin-bottom: 0;
   }
-  
   img {
     width: 20px;
     height: 20px;
   }
-  
   div {
     display: flex;
     flex-direction: column;

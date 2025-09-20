@@ -14,7 +14,6 @@ export const MainContent = styled.div`
   padding: 0 60px;
   gap: 50px;
   /* margin-bottom: 20px; */
-  /* background-color: red; */
 `
 
 export const LeftPanel = styled.div`
@@ -29,7 +28,7 @@ export const RightPanel = styled.div`
 
 // Image Section Components
 export const ImageSection = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 70px;
   width: 100%;
   display: flex;
   gap: 15px;
@@ -61,7 +60,6 @@ export const ThumbnailContainer = styled.div`
   flex-direction: column;
   gap: 15px;
   width: 160px;
-  /* background-color: red; */
 `
 
 export const ThumbnailWrapper = styled.div`
@@ -114,7 +112,6 @@ export const InfoSection = styled.div`
   flex-direction: column;
   position: relative;
   width: 100%;
-  /* background-color: red; */
 `
 
 export const BuildingTitle = styled.h1`
@@ -222,6 +219,10 @@ export const HistoryItemTitle = styled.h3`
   font-weight: var(--font-weight-medium);
   color: var(--color-white);
   margin: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 export const HistoryConnector = styled.div`
@@ -234,7 +235,7 @@ export const HistoryConnector = styled.div`
   cursor: pointer;
 `
 
-export const StatusBadge = styled.div`
+export const TypeBadge = styled.div`
   background-color: ${props => props.color || 'var(--color-gray-3)'};
   color: white;
   padding: 8px 12px;
@@ -510,7 +511,6 @@ export const GalleryThumbnails = styled.div`
   margin-top: 20px;
   max-width: 80vw;
   overflow-x: auto;
-  /* background-color: red; */
 `
 
 export const GalleryThumbnail = styled.img`

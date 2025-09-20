@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Header from '../components/Header/Header'
 import DetailMapComponent from '../components/Map/DetailMapComponent'
@@ -27,108 +27,75 @@ const DetailPage = () => {
   const [selectedChange, setSelectedChange] = useState(null)
   const [activeVersionIndex, setActiveVersionIndex] = useState(0)
   const galleryRef = useRef(null)
-  const buildingData = useMemo(() => ({
-    id: 1,
-    name: 'The "Romashka" Building',
-    address: '454 Park Avenue, Chisinau',
-    coordinates: [47.0105, 28.8638], // Chisinau coordinates
-    author: 'Ivan Magjar',
-    history: [
-      {
-        title: 'UOV Title',
-        status: 'Destroying',
-        version: '10',
-        statusText: 'status: destroying',
-        color: '#dc3545',
-        statusDate: '12/01/2024 - 17/05/2025',
-        type: 'Building',
-        ownership: 'Governmental',
-        startDate: '15/01/2025',
-        endDate: '17/05/2025',
-        timeInterval: '120 days',
-        description: `Latest version: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus euismod neque lobortis tincidunt molestie, est massa elementum felis, sed sodales velit ante et libero. Nullam maximus nunc at velit tempor, ut rutrum mauris rutrum. This building is currently being destroyed as part of urban renewal project. The demolition process started in January 2025 and is expected to complete by May 2025.`,
-        images: [
-          {
-            full: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=800&fit=crop&crop=center',
-            main: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=650&h=300&fit=crop&crop=center',
-            thumb: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=100&h=80&fit=crop&crop=center'
-          },
-          {
-            full: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=800&fit=crop&crop=center',
-            main: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=650&h=300&fit=crop&crop=center',
-            thumb: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=100&h=80&fit=crop&crop=center'
-          },
-          {
-            full: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&h=800&fit=crop&crop=center',
-            main: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=650&h=300&fit=crop&crop=center',
-            thumb: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=100&h=80&fit=crop&crop=center'
-          },
-          {
-            full: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=800&fit=crop&crop=center',
-            main: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=650&h=300&fit=crop&crop=center',
-            thumb: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=100&h=80&fit=crop&crop=center'
-          }
-        ]
-      },
-      {
-        title: 'UOV Title',
-        status: 'Modification',
-        version: '9',
-        statusText: 'status: changed',
-        color: '#6f42c1',
-        statusDate: '10/08/2024 - 12/01/2024',
-        type: 'Building',
-        ownership: 'Governmental',
-        startDate: '10/08/2024',
-        endDate: '12/01/2024',
-        timeInterval: '155 days',
-        description: `Version 9: This version shows the building during modification phase. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Major renovations were undertaken including facade improvements, interior restructuring, and modernization of utilities. The modification work was completed successfully in early 2024.`,
-        images: [
-          {
-            full: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&h=800&fit=crop&crop=center',
-            main: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=650&h=300&fit=crop&crop=center',
-            thumb: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=100&h=80&fit=crop&crop=center'
-          },
-          {
-            full: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=800&fit=crop&crop=center',
-            main: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=650&h=300&fit=crop&crop=center',
-            thumb: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=100&h=80&fit=crop&crop=center'
-          },
-          {
-            full: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=800&fit=crop&crop=center',
-            main: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=650&h=300&fit=crop&crop=center',
-            thumb: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=100&h=80&fit=crop&crop=center'
-          }
-        ]
-      },
-      {
-        title: 'UOV Title',
-        status: 'Construction',
-        version: '8',
-        statusText: 'status: construction',
-        color: '#28a745',
-        statusDate: '15/03/2024 - 10/08/2024',
-        type: 'Building',
-        ownership: 'Private',
-        startDate: '15/03/2024',
-        endDate: '10/08/2024',
-        timeInterval: '148 days',
-        description: `Version 8: Original construction phase of the building. Lorem ipsum dolor sit amet, consectetur adipiscing elit. This was the initial construction period when the building was first erected. The construction followed modern architectural standards and was completed on schedule.`,
-        images: [
-          {
-            full: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=800&fit=crop&crop=center',
-            main: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=650&h=300&fit=crop&crop=center',
-            thumb: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=100&h=80&fit=crop&crop=center'
-          },
-          {
-            full: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=800&fit=crop&crop=center',
-            main: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=650&h=300&fit=crop&crop=center',
-            thumb: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=100&h=80&fit=crop&crop=center'
-          }
-        ]
+  const [buildingData, setBuildingData] = useState({
+    id: id ? Number(id) : null,
+    name: '',
+    address: '',
+    coordinates: null,
+    author: '',
+    history: [],
+    changes: [],
+  })
+
+  // API base URL (set REACT_APP_API_BASE to override, e.g., http://localhost:8000)
+  const API_BASE = (process.env.REACT_APP_API_BASE || '').replace(/\/+$/, '')
+  const buildApiUrl = (path) => `${API_BASE}${path}`
+
+  useEffect(() => {
+    let isCancelled = false
+    async function load() {
+      try {
+        const resp = await fetch(buildApiUrl(`http://localhost:8000/api/v1/urban-objects/${id}`))
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
+        const data = await resp.json()
+
+        const versions = Array.isArray(data.versions) ? data.versions : []
+        // Ensure newest-first (desc by start date)
+        const versionsSorted = versions.slice().sort((a, b) => {
+          const da = a?.dates?.start ? new Date(a.dates.start) : new Date(0)
+          const db = b?.dates?.start ? new Date(b.dates.start) : new Date(0)
+          return db - da
+        })
+        const history = versionsSorted.map((v) => ({
+          id: v.id,
+          title: v.title,
+          status: v.status,
+          version: String(v.number),
+          type: v.type || data.type || '',
+          ownership: v.ownership,
+          address: v.address,
+          dates: v.dates || { start: null, end: null },
+          description: v.description,
+          images: Array.isArray(v.images) ? v.images : [],
+        }))
+
+        const changes = Array.isArray(data.changes) ? data.changes : []
+        const author = (changes[0]?.author) || ''
+        const coordinates = Array.isArray(data.coordinates) && data.coordinates.length === 2 ? data.coordinates : null
+
+        if (!isCancelled) {
+          setBuildingData({
+            id: data.id,
+            name: data.name,
+            address: data.address,
+            coordinates,
+            author,
+            history,
+            changes,
+          })
+          setActiveVersionIndex(0)
+          setActiveImageIndex(0)
+        }
+      } catch (e) {
+        console.error('Failed to load detail', e)
+        if (!isCancelled) {
+          setBuildingData((prev) => ({ ...prev, history: [], changes: [] }))
+        }
       }
-    ]
-  }), [])
+    }
+    if (id) load()
+    return () => { isCancelled = true }
+  }, [id])
 
   const getActiveVersionData = () => {
     const activeVersion = buildingData.history[activeVersionIndex]
@@ -193,7 +160,8 @@ const DetailPage = () => {
   }
 
   const handleChangeClick = (change) => {
-    setSelectedChange(change)
+    const ui = mapChangeToUI(change)
+    setSelectedChange({ ...change, ui: { ...(change.ui || {}), time_interval_text: ui.timeIntervalText } })
     setIsChangePopupOpen(true)
   }
 
@@ -236,6 +204,55 @@ const DetailPage = () => {
   }, [activeImageIndex, hasImages, activeVersionData.images?.length])
 
 
+  // Helpers to work with Urban Changes (connectors)
+  const findChangeBetween = (vIdA, vIdB) => {
+    const list = buildingData?.changes || []
+    return (
+      list.find(
+        (c) =>
+          (c.from_version_id === vIdA && c.to_version_id === vIdB) ||
+          (c.from_version_id === vIdB && c.to_version_id === vIdA)
+      ) || null
+    )
+  }
+
+  const formatDate = (iso) => {
+    if (!iso) return '-'
+    const d = new Date(iso)
+    if (Number.isNaN(d.getTime())) return ''
+    const dd = String(d.getDate()).padStart(2, '0')
+    const mm = String(d.getMonth() + 1).padStart(2, '0')
+    const yyyy = d.getFullYear()
+    return `${dd}/${mm}/${yyyy}`
+  }
+
+  const daysBetween = (a, b) => {
+    const d1 = a ? new Date(a) : null
+    const d2 = b ? new Date(b) : null
+    if (!d1 || !d2 || Number.isNaN(d1.getTime()) || Number.isNaN(d2.getTime())) return null
+    const diff = Math.abs(d2 - d1)
+    return Math.round(diff / (1000 * 60 * 60 * 24))
+  }
+
+  const getChangeColor = (type) => {
+    const t = (type || '').toLowerCase()
+    if (t.includes('creation')) return '#28a745' // green
+    if (t.includes('modification')) return '#6c757d' // gray
+    if (t.includes('deletion')) return '#dc3545' // red
+    return '#6c757d' // gray fallback
+  }
+
+  const mapChangeToUI = (change) => {
+    if (!change) return { color: '#6c757d', statusDate: '', timeIntervalText: '' }
+    const color = getChangeColor(change.type)
+    const start = change.dates?.start
+    const end = change.dates?.end
+    const statusDate = [formatDate(start), formatDate(end)].filter(Boolean).join(' - ')
+    const days = daysBetween(start, end)
+    const timeIntervalText = days != null ? `${days} days` : ''
+    return { color, statusDate, timeIntervalText }
+  }
+
   return (
     <S.PageContainer>
       <Header />
@@ -251,11 +268,7 @@ const DetailPage = () => {
                   onClick={handleMainImageClick}
                 />
               ) : (
-                <S.MainImage
-                  src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=650&h=300&fit=crop&crop=center"
-                  alt={activeVersionData.name}
-                  onClick={handleMainImageClick}
-                />
+                <></>
               )}
             </S.MainImageContainer>
 
@@ -350,7 +363,7 @@ const DetailPage = () => {
                 </S.InfoIcon>
                 <S.DateContent>
                   <S.DateLabel>Start Date</S.DateLabel>
-                  <S.DateValue>{activeVersionData.startDate}</S.DateValue>
+                  <S.DateValue>{formatDate(activeVersionData.dates?.start)}</S.DateValue>
                 </S.DateContent>
               </S.DateItem>
 
@@ -360,7 +373,7 @@ const DetailPage = () => {
                 </S.InfoIcon>
                 <S.DateContent>
                   <S.DateLabel>End Date</S.DateLabel>
-                  <S.DateValue>{activeVersionData.endDate}</S.DateValue>
+                  <S.DateValue>{formatDate(activeVersionData.dates?.end)}</S.DateValue>
                 </S.DateContent>
               </S.DateItem>
 
@@ -370,7 +383,7 @@ const DetailPage = () => {
                 </S.InfoIcon>
                 <S.DateContent>
                   <S.DateLabel>Time Interval</S.DateLabel>
-                  <S.DateValue>{activeVersionData.timeInterval}</S.DateValue>
+                  <S.DateValue>{(() => { const d = daysBetween(activeVersionData.dates?.start, activeVersionData.dates?.end); return d != null ? `${d} days` : '-' })()}</S.DateValue>
                 </S.DateContent>
               </S.DateItem>
             </S.DateGrid>
@@ -388,6 +401,23 @@ const DetailPage = () => {
       <S.HistorySection>
         <S.HistoryTitle>History of Changes</S.HistoryTitle>
         <S.HistoryList>
+          {(() => {
+            if (!buildingData.history || buildingData.history.length === 0) return null
+            const latest = buildingData.history[0]
+            const headChange = latest ? (buildingData.changes || []).find(
+              (c) => c && c.from_version_id === latest.id && (c.to_version_id === null || c.to_version_id === undefined)
+            ) : null
+            if (!headChange) return null
+            const ui = mapChangeToUI(headChange)
+            return (
+              <S.HistoryConnector onClick={() => handleChangeClick(headChange)}>
+                <S.TypeBadge color={ui.color}>{headChange.type}</S.TypeBadge>
+                <S.ConnectorLine />
+                <S.StatusDate>{ui.statusDate}</S.StatusDate>
+              </S.HistoryConnector>
+            )
+          })()}
+
           {buildingData.history.map((item, index) => (
             <React.Fragment key={index}>
               <S.HistoryItem
@@ -401,21 +431,43 @@ const DetailPage = () => {
                 </S.VersionInfo>
                 <S.StatusInfo>
                   <img src={HistoryStatusIcon} alt="Status" />
-                  {item.statusText}
+                  {`status: ${String(item.status || '').toLowerCase()}`}
                 </S.StatusInfo>
               </S.HistoryItem>
 
-              {index < buildingData.history.length - 1 && (
-                <S.HistoryConnector onClick={() => handleChangeClick(item)}>
-                  <S.StatusBadge color={item.color}>
-                    {item.status}
-                  </S.StatusBadge>
-                  <S.ConnectorLine />
-                  <S.StatusDate>{item.statusDate}</S.StatusDate>
-                </S.HistoryConnector>
-              )}
+              {index < buildingData.history.length - 1 && (() => {
+                const next = buildingData.history[index + 1]
+                const change = next ? findChangeBetween(item.id, next.id) : null
+                const ui = change ? mapChangeToUI(change) : { color: '#6c757d', statusDate: '' }
+                return (
+                  <S.HistoryConnector onClick={() => change && handleChangeClick(change)}>
+                    <S.TypeBadge color={ui.color}>
+                      {change?.type || item.type}
+                    </S.TypeBadge>
+                    <S.ConnectorLine />
+                    <S.StatusDate>{ui.statusDate}</S.StatusDate>
+                  </S.HistoryConnector>
+                )
+              })()}
             </React.Fragment>
           ))}
+
+          {(() => {
+            if (!buildingData.history || buildingData.history.length === 0) return null
+            const earliest = buildingData.history[buildingData.history.length - 1]
+            const tailChange = earliest ? (buildingData.changes || []).find(
+              (c) => c && c.to_version_id === earliest.id && (c.from_version_id === null || c.from_version_id === undefined)
+            ) : null
+            if (!tailChange) return null
+            const ui = mapChangeToUI(tailChange)
+            return (
+              <S.HistoryConnector onClick={() => handleChangeClick(tailChange)}>
+                <S.TypeBadge color={ui.color}>{tailChange.type}</S.TypeBadge>
+                <S.ConnectorLine />
+                <S.StatusDate>{ui.statusDate}</S.StatusDate>
+              </S.HistoryConnector>
+            )
+          })()}
         </S.HistoryList>
       </S.HistorySection>
 
