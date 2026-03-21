@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-alpine as build
+FROM node:18-alpine AS build
 
 WORKDIR /app
 
@@ -12,8 +12,12 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Build the app
-RUN npm run build
+# Set environment variables for faster build
+ENV NODE_ENV=production
+ENV GENERATE_SOURCEMAP=false
+
+# Build the app with increased memory limit
+RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
 # Production stage with nginx
 FROM nginx:alpine
