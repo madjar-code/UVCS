@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./_backend
+      dockerfile: Dockerfile
+    container_name: uvcs-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend_data:/app/data
+      - ./backend_media:/app/media
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - API_RELOAD=false
+      - LOG_LEVEL=INFO
+    networks:
+      - uvcs-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: uvcs-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - uvcs-network
+
+networks:
+  uvcs-network:
+    driver: bridge
+
+volumes:
+  backend_data:
+  backend_media:
+
