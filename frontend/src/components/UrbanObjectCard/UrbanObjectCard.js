@@ -131,12 +131,18 @@ const ItemCard = styled.div`
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   border-radius: 8px;
-  /* padding: 8px; */
   margin: -8px;
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
   }
 `
 
@@ -149,6 +155,11 @@ const ItemImage = styled.div`
   background-image: url(${props => props.src});
   background-size: cover;
   background-position: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 200px;
+  }
 `
 
 const ItemContent = styled.div`
@@ -241,6 +252,11 @@ const TagsContainer = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
+
+  @media (max-width: 768px) {
+    position: static;
+    margin-top: 10px;
+  }
 `;
 
 const Tag = styled.span`

@@ -30,7 +30,12 @@ const HeaderContent = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 1160px;
-  /* background-color: yellow; */
+  padding: 0 20px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0 20px;
+  }
 `
 
 const Logo = styled.h1`
@@ -39,6 +44,10 @@ const Logo = styled.h1`
   color: var(--color-blue);
   margin: 0;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 `
 
 const NavLink = styled.a`
@@ -46,6 +55,10 @@ const NavLink = styled.a`
   text-decoration: none;
   font-size: 18px;
   font-weight: var(--font-weight-regular);
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `
 
 export default Header

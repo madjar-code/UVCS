@@ -13,17 +13,32 @@ export const MainContent = styled.div`
   justify-content: center;
   padding: 0 60px;
   gap: 50px;
-  /* margin-bottom: 20px; */
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 0 20px;
+    gap: 20px;
+  }
 `
 
 export const LeftPanel = styled.div`
   width: 650px;
   padding: 45px 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 20px 0;
+  }
 `
 
 export const RightPanel = styled.div`
   width: 450px;
   padding: 45px 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 20px 0;
+  }
 `
 
 // Image Section Components
@@ -32,6 +47,11 @@ export const ImageSection = styled.div`
   width: 100%;
   display: flex;
   gap: 15px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    margin-bottom: 40px;
+  }
 `
 
 export const MainImageContainer = styled.div`
@@ -40,6 +60,11 @@ export const MainImageContainer = styled.div`
   border-radius: 8px;
   overflow: hidden;
   position: relative;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 250px;
+  }
 `
 
 export const MainImage = styled.img`
@@ -60,12 +85,23 @@ export const ThumbnailContainer = styled.div`
   flex-direction: column;
   gap: 15px;
   width: 160px;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    width: 100%;
+    overflow-x: auto;
+  }
 `
 
 export const ThumbnailWrapper = styled.div`
   position: relative;
   width: 160px;
   height: 90px;
+
+  @media (max-width: 768px) {
+    min-width: 120px;
+    height: 80px;
+  }
 `
 
 export const Thumbnail = styled.img`
@@ -118,6 +154,10 @@ export const BuildingTitle = styled.h1`
   font-size: 24px;
   font-weight: var(--font-weight-medium);
   margin: 0 0 8px 0;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `
 
 export const AddressContainer = styled.div`
@@ -145,7 +185,6 @@ export const Address = styled.p`
 
 export const Author = styled.div`
   font-size: 14px;
-  /* color: var(--color-white); */
   width: 165px;
   height: 80px;
   border-radius: 5px;
@@ -161,6 +200,12 @@ export const Author = styled.div`
   position: absolute;
   right: 0;
   top: 0;
+
+  @media (max-width: 768px) {
+    position: static;
+    width: 100%;
+    margin-top: 15px;
+  }
 `
 
 export const DescriptionSection = styled.div`
@@ -176,9 +221,12 @@ export const Description = styled.p`
 
 // History Section Components
 export const HistorySection = styled.div`
-  /* background-color: blue; */
   max-width: 1150px;
   margin: 0 auto 40px auto;
+
+  @media (max-width: 768px) {
+    margin: 0 20px 30px 20px;
+  }
 `
 
 export const HistoryTitle = styled.h2`
@@ -186,6 +234,10 @@ export const HistoryTitle = styled.h2`
   font-weight: var(--font-weight-medium);
   color: var(--color-white);
   margin: 0 0 20px 0;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `
 
 export const HistoryList = styled.div`
@@ -193,6 +245,11 @@ export const HistoryList = styled.div`
   gap: 15px;
   align-items: flex-start;
   justify-content: flex-start;
+
+  @media (max-width: 768px) {
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
 `
 
 export const HistoryItem = styled.div`
@@ -210,6 +267,10 @@ export const HistoryItem = styled.div`
     background-color: ${props => props.active ? 'var(--color-blue)' : 'var(--color-gray-3)'};
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    min-width: 160px;
   }
 `
 
@@ -233,6 +294,10 @@ export const HistoryConnector = styled.div`
   min-width: 120px;
   gap: 8px;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    min-width: 100px;
+  }
 `
 
 export const TypeBadge = styled.div`
@@ -355,6 +420,11 @@ export const DateGrid = styled.div`
   background-color: var(--color-gray-3);
   padding: 20px;
   border-radius: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 15px;
+  }
 `
 
 export const DateItem = styled.div`

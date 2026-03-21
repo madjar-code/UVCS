@@ -355,15 +355,25 @@ const MainContent = styled.div`
   justify-content: center;
   height: calc(100vh - 53px);
   padding: 0 60px;
-  /* background-color: red; */
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 `
 
 const LeftPanel = styled.div`
   padding-top: 40px;
-  padding-bottom: 30px; /* extra bottom spacing so last card isn't flush with edge */
+  padding-bottom: 30px;
   overflow-y: auto;
   margin-right: 30px;
-  /* background-color: green; */
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
 `
 
 const MapContainer = styled.div`
@@ -371,7 +381,10 @@ const MapContainer = styled.div`
   margin-left: 30px;
   position: sticky;
   top: 0;
-  /* background-color: blue; */
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
 
 const SearchTitle = styled.h2`
@@ -411,6 +424,10 @@ const Input = styled.input`
     outline: none;
     border-color: var(--color-blue);
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 
 const FilterRow = styled.div`
@@ -419,6 +436,11 @@ const FilterRow = styled.div`
   align-items: flex-end;
   gap: 15px;
   width: 590px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-wrap: wrap;
+  }
 `
 
 const FormGroupSelect = styled(FormGroup)`
@@ -455,6 +477,11 @@ const SearchButton = styled.button`
   border-radius: 4px;
   color: white;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-top: 10px;
+  }
 `
 
 const ResultsContainer = styled.div`

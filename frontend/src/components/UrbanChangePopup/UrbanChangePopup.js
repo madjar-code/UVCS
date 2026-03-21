@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 // Import popup icons
@@ -133,11 +132,17 @@ const ChangePopupContent = styled.div`
   background-color: var(--color-gray-3);
   border-radius: 10px;
   padding: 20px;
-  width: 90%;
   width: 600px;
+  max-width: 90%;
   max-height: 90vh;
   overflow-y: auto;
   color: white;
+
+  @media (max-width: 768px) {
+    width: 95%;
+    max-width: 95%;
+    padding: 15px;
+  }
 `
 
 const ChangePopupHeader = styled.div`
@@ -152,6 +157,10 @@ const ChangePopupTitle = styled.h2`
   font-weight: 600;
   margin: 0;
   color: white;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 `
 
 const CloseButton = styled.button`
@@ -177,7 +186,11 @@ const ChangePopupDescription = styled.p`
 const ChangePopupSections = styled.div`
   display: flex;
   gap: 24px;
-  /* padding: 0 24px 24px 24px; */
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+  }
 `
 
 const ChangePopupSection = styled.div`
@@ -188,6 +201,10 @@ const ChangePopupSectionTitle = styled.h3`
   font-size: 16px;
   font-weight: var(--font-weight-semibold);
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `
 
 const ChangePopupInfo = styled.div`
