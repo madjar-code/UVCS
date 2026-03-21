@@ -20,7 +20,7 @@ class Settings:
         self.version_media_file = self.data_dir / "version_media.csv"
 
         # Media configuration
-        self.media_dir = self.project_dir / "media"
+        self.media_dir = self._get_media_dir()
         self.media_images_dir = self.media_dir / "images"
         self._ensure_media_dirs()
 
@@ -40,6 +40,15 @@ class Settings:
 
         # Default: project/_backend/data/
         return self.project_dir / "data"
+
+    def _get_media_dir(self) -> Path:
+        """Get media directory path with environment variable override"""
+        media_dir_env = os.getenv("MEDIA_DIR")
+        if media_dir_env:
+            return Path(media_dir_env)
+
+        # Default: project/_backend/media/
+        return self.project_dir / "media"
 
     def _ensure_media_dirs(self) -> None:
         """Ensure media directories exist"""

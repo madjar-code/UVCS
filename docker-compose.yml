@@ -17,6 +17,9 @@ services:
       - API_PORT=8000
       - API_RELOAD=false
       - LOG_LEVEL=INFO
+      - DATA_DIR=/app/data
+      - MEDIA_DIR=/app/media
+      - BASE_URL=https://www.uvcs.info
     networks:
       - uvcs-network
 
