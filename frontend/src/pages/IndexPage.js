@@ -46,11 +46,14 @@ const IndexPage = () => {
     }
   };
 
+  // API base URL (set REACT_APP_API_BASE to override)
+  const API_BASE = (process.env.REACT_APP_API_BASE || '').replace(/\/+$/, '')
+
   // API call function - fetch all data once
   const fetchUrbanObjects = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/urban-objects`);
+      const response = await fetch(`${API_BASE}/api/v1/urban-objects`);
       const data = await response.json();
 
       setAllUrbanObjects(data);
@@ -60,7 +63,7 @@ const IndexPage = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [API_BASE]);
 
   // Create applied filters state that only updates when search button is clicked
   const [appliedFilters, setAppliedFilters] = useState({

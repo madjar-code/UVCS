@@ -39,13 +39,12 @@ const DetailPage = () => {
 
   // API base URL (set REACT_APP_API_BASE to override, e.g., http://localhost:8000)
   const API_BASE = (process.env.REACT_APP_API_BASE || '').replace(/\/+$/, '')
-  const buildApiUrl = (path) => `${API_BASE}${path}`
 
   useEffect(() => {
     let isCancelled = false
     async function load() {
       try {
-        const resp = await fetch(buildApiUrl(`http://localhost:8000/api/v1/urban-objects/${id}`))
+        const resp = await fetch(`${API_BASE}/api/v1/urban-objects/${id}`)
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
         const data = await resp.json()
 
@@ -95,7 +94,7 @@ const DetailPage = () => {
     }
     if (id) load()
     return () => { isCancelled = true }
-  }, [id])
+  }, [id, API_BASE])
 
   const getActiveVersionData = () => {
     const activeVersion = buildingData.history[activeVersionIndex]
@@ -194,14 +193,7 @@ const DetailPage = () => {
       // If no images, ensure index is 0
       setActiveImageIndex(0)
     }
-  }, [activeVersionIndex, hasImages, activeVersionData.images?.length])
-
-  // Separate effect to handle image index bounds without causing infinite loops
-  useEffect(() => {
-    if (hasImages && activeImageIndex >= activeVersionData.images.length) {
-      setActiveImageIndex(Math.max(0, activeVersionData.images.length - 1))
-    }
-  }, [activeImageIndex, hasImages, activeVersionData.images?.length])
+  }, [activeVersionIndex, hasImages, activeVersionData.images?.length, activeImageIndex])
 
 
   // Helpers to work with Urban Changes (connectors)
