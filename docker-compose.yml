@@ -43,7 +43,3 @@ networks:
   uvcs-network:
     driver: bridge
 
-volumes:
-  backend_data:
-  backend_media:
-
