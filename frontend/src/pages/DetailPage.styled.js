@@ -90,6 +90,17 @@ export const ThumbnailContainer = styled.div`
     flex-direction: row;
     width: 100%;
     overflow-x: auto;
+    overflow-y: hidden;
+    align-items: flex-start;
+    padding: 5px 0;
+
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-gray-3);
+      border-radius: 10px;
+    }
   }
 `
 
@@ -481,6 +492,16 @@ export const GalleryContent = styled.div`
   max-width: 90vw;
   max-height: 90vh;
   cursor: default;
+
+  @media (max-width: 768px) {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 `
 
 export const CloseButton = styled.button`
@@ -498,6 +519,16 @@ export const CloseButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+
+  @media (max-width: 768px) {
+    top: 10px;
+    right: 10px;
+    font-size: 32px;
+    width: 36px;
+    height: 36px;
+  }
 `
 
 export const GalleryImageContainer = styled.div`
@@ -512,6 +543,12 @@ export const GalleryImage = styled.img`
   max-height: 70vh;
   object-fit: contain;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+    max-width: 100vw;
+    max-height: 60vh;
+    border-radius: 0;
+  }
 `
 
 export const PrevButton = styled.button`
@@ -541,6 +578,14 @@ export const PrevButton = styled.button`
   &:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    left: 10px;
+    font-size: 32px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.6);
   }
 `
 
@@ -572,6 +617,14 @@ export const NextButton = styled.button`
     opacity: 0.3;
     cursor: not-allowed;
   }
+
+  @media (max-width: 768px) {
+    right: 10px;
+    font-size: 32px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.6);
+  }
 `
 
 export const GalleryThumbnails = styled.div`
@@ -581,6 +634,13 @@ export const GalleryThumbnails = styled.div`
   margin-top: 20px;
   max-width: 80vw;
   overflow-x: auto;
+
+  @media (max-width: 768px) {
+    max-width: 100vw;
+    padding: 0 10px;
+    gap: 8px;
+    margin-top: 15px;
+  }
 `
 
 export const GalleryThumbnail = styled.img`
@@ -596,6 +656,11 @@ export const GalleryThumbnail = styled.img`
     /* transform: scale(1.1); */
     ${props => !props.active && 'border: 2px solid var(--color-blue);'}
   }
+
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 40px;
+  }
 `
 
 export const ImageCounter = styled.div`
@@ -608,4 +673,10 @@ export const ImageCounter = styled.div`
   padding: 4px 12px;
   border-radius: 12px;
   display: inline-block;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    padding: 3px 10px;
+    margin-top: 8px;
+  }
 `
