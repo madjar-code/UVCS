@@ -8,11 +8,15 @@ const Header = () => {
     navigate('/')
   }
 
+  const handleAboutClick = () => {
+    navigate('/about')
+  }
+
   return (
     <HeaderContainer>
       <HeaderContent>
         <Logo onClick={handleLogoClick}>UVCS</Logo>
-        <NavLink href="#">About</NavLink>
+        <NavLink onClick={handleAboutClick}>About</NavLink>
       </HeaderContent>
     </HeaderContainer>
   )
@@ -50,11 +54,12 @@ const Logo = styled.h1`
   }
 `
 
-const NavLink = styled.a`
+const NavLink = styled.div`
   color: var(--color-white);
   text-decoration: none;
   font-size: 18px;
   font-weight: var(--font-weight-regular);
+  cursor: pointer;
 
   @media (max-width: 768px) {
     font-size: 16px;
