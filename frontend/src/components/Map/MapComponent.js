@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
@@ -126,12 +126,36 @@ const PopupDescription = styled.p`
   font-size: 12px;
 `;
 
+// Component to save and restore map state
+const MapStateManager = () => {
+  const map = useMapEvents({
+    moveend: () => {
+      const center = map.getCenter();
+      const zoom = map.getZoom();
+      sessionStorage.setItem('mapCenter', JSON.stringify([center.lat, center.lng]));
+      sessionStorage.setItem('mapZoom', zoom.toString());
+    },
+  });
+  return null;
+};
+
 const MapComponent = ({ buildings = [] }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Default center coordinates (Chisinau, Moldova - Stephen the Great Central Park area)
   const defaultCenter = [47.0246, 28.8329];
   const defaultZoom = 12;
+
+  // Restore map state from sessionStorage
+  const getSavedCenter = () => {
+    const saved = sessionStorage.getItem('mapCenter');
+    return saved ? JSON.parse(saved) : defaultCenter;
+  };
+
+  const getSavedZoom = () => {
+    const saved = sessionStorage.getItem('mapZoom');
+    return saved ? parseInt(saved) : defaultZoom;
+  };
 
   useEffect(() => {
     // Simulate loading time
@@ -155,8 +179,8 @@ const MapComponent = ({ buildings = [] }) => {
   return (
     <MapWrapper>
       <StyledMapContainer
-        center={defaultCenter}
-        zoom={defaultZoom}
+        center={getSavedCenter()}
+        zoom={getSavedZoom()}
         zoomControl={true}
       >
         {/* Use light theme tiles */}
@@ -165,6 +189,9 @@ const MapComponent = ({ buildings = [] }) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           maxZoom={20}
         />
+
+        {/* Save map state on move */}
+        <MapStateManager />
 
         {buildings.map((building) => (
           <Marker
